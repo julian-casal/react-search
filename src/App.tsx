@@ -9,7 +9,10 @@ function App() {
   const debounceRef = useRef<number>();
 
   const isWordMatch = useMemo(
-    () => Boolean(wordList.find((word: string) => word == valueToSearch)),
+    () =>
+      Boolean(
+        wordList.find((word: string) => word == valueToSearch.toLowerCase())
+      ),
     [valueToSearch, wordList]
   );
 
@@ -33,7 +36,7 @@ function App() {
 
     debounceRef.current = setTimeout(() => {
       setValueToSearch(event.target.value);
-    }, 500);
+    }, 350);
   };
 
   return (
