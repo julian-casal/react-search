@@ -6,3 +6,10 @@ Given an API that returns a list with thousands of records; each record containi
 2. UI must be highly performant and snappy
 3. Only React and native JS must be used
 4. Code uses well known React and JS design patterns 5. Bonus if implemented in Typescript
+
+### Some examples to test
+
+- table
+- table, book
+- cat
+- you, make, me

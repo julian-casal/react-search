@@ -1,41 +1,27 @@
-import { useState, useEffect, useMemo, useRef, ChangeEvent } from "react";
+import { useState, ChangeEvent, useRef } from "react";
 
-import { Container, NoSearchValue, SearchInput, InfoBox } from "./styles";
+import FindThem from "./findThem";
+import { Container, SearchInput } from "./App.styles";
 
 function App() {
   const [searchInput, setSearchInput] = useState("");
-  const [valueToSearch, setValueToSearch] = useState("");
-  const [wordList, setWordList] = useState([]);
+  const [wordsToSearch, setWordsToSearch] = useState<string[]>([]);
   const debounceRef = useRef<number>();
 
-  const isWordMatch = useMemo(
-    () =>
-      Boolean(
-        wordList.find((word: string) => word == valueToSearch.toLowerCase())
-      ),
-    [valueToSearch, wordList]
-  );
-
-  useEffect(() => {
-    fetch("./data/wordList.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => setWordList(res));
-  }, []);
-
   const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(event.target.value);
+    const inputValue = event.target.value;
+    setSearchInput(inputValue);
+
+    const words = inputValue
+      ? inputValue.split(",").map((word) => word.trim())
+      : [];
 
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
 
     debounceRef.current = setTimeout(() => {
-      setValueToSearch(event.target.value);
+      setWordsToSearch(words);
     }, 350);
   };
 
@@ -45,13 +31,7 @@ function App() {
         value={searchInput}
         onChange={(e) => handleSearchInputChange(e)}
       />
-      {valueToSearch.length > 0 ? (
-        <InfoBox $isWordMatch={isWordMatch}>
-          {isWordMatch ? "Word is in the list!" : "Word can't be found"}
-        </InfoBox>
-      ) : (
-        <NoSearchValue>Start writting to find a word!</NoSearchValue>
-      )}
+      <FindThem words={wordsToSearch} />
     </Container>
   );
 }
