@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, useRef } from "react";
 
-import FindThem from "./findThem";
+import FindThem from "./FindThem";
 import { Container, SearchInput } from "./App.styles";
 
 function App() {
